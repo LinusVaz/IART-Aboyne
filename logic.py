@@ -18,9 +18,47 @@ def is_adjacent(cell1, cell2):
 
 def valid_move(selected_cell, destination_cell, player_turn):
     if(game_board[selected_cell[1]][selected_cell[0]] == player_turn+1):
-        if(game_board[destination_cell[1]][destination_cell[0]] == 1):
+        if(game_board[destination_cell[1]][destination_cell[0]] == 1 or winning_way(selected_cell,destination_cell)):
             if(is_adjacent(selected_cell, destination_cell)):
-                return True
+             if(blocked_cell(selected_cell,destination_cell)):
+                  return True
+            
+def blocked_cell(cell3, cell4):  
+    if game_board[cell3[1]][cell3[0]] == 2 and (game_board[cell3[1]-1][cell3[0]-1] == 3 or game_board[cell3[1] +1][cell3[0]-1] == 3 or game_board[cell3[1]-1][cell3[0]+1] == 3 or game_board[cell3[1] +1][cell3[0]+1] == 3 or game_board[cell3[1]][cell3[0] - 2] == 3 or game_board[cell3[1]][cell3[0] + 2] == 3):
+        game_board[cell4[1]][cell4[0]] = 1
+        game_board[cell3[1]][cell3[0]] = 2
+             
+    elif game_board[cell3[1]][cell3[0]] == 3 and (game_board[cell3[1]-1][cell3[0]-1] == 2 or game_board[cell3[1] +1][cell3[0]-1] == 2 or game_board[cell3[1]-1][cell3[0]+1] == 2 or game_board[cell3[1] +1][cell3[0]+1] == 2 or game_board[cell3[1]][cell3[0] - 2] == 2 or game_board[cell3[1]][cell3[0] + 2] == 2):
+           game_board[cell4[1]][cell4[0]] = 1
+           game_board[cell3[1]][cell3[0]] = 3
+           
+    else:
+        return True   
+    
+                             
+        
+        
+
+
+def winning_way(cell2, cell3):
+    
+    if game_board[cell2[1]][cell2[0]] == 2 and game_board[cell3[1]][cell3[0]] == 4:
+        game_board[cell3[1]][cell3[0]] = 2
+        game_board[cell2[1]][cell2[0]] = 1
+        
+        
+        
+    elif game_board[cell2[1]][cell2[0]] == 3 and game_board[cell3[1]][cell3[0]] == 5:
+        game_board[cell3[1]][cell3[0]] = 3
+        game_board[cell2[1]][cell2[0]] = 1
+        
+        
+    else:
+        game_board[cell2[1]][cell2[0]] = game_board[cell2[1]][cell2[0]]
+        game_board[cell3[1]][cell3[0]] = game_board[cell3[1]][cell3[0]]  
+        
+        
+
 
 def game_loop(screen, OFFSET_X, OFFSET_Y):
     running = True
@@ -59,4 +97,4 @@ def game_loop(screen, OFFSET_X, OFFSET_Y):
         draw_board(screen, OFFSET_X, OFFSET_Y)
         if selected_cell is not None:
             pygame.draw.circle(screen, (0, 0, 0), (OFFSET_X + (selected_cell[0]*CELL_SIZE//2) + CELL_SIZE//2, OFFSET_Y + selected_cell[1]*CELL_SIZE + CELL_SIZE//2), CELL_SIZE//2, 2)
-        pygame.display.flip()
+        pygame.display.flip()  
